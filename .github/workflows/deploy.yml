@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'app-biblioteca-bot'   # Coloca aqui o nome do teu App Service
+  AZURE_WEBAPP_NAME: 'app-biblioteca-bot'
   NODE_VERSION: '22.x'
 
 jobs:
@@ -59,7 +59,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          # IMPORTANTE: Configura esta Secret no GitHub (Settings -> Secrets -> Actions)
-          # O valor deve ser o conteúdo do ficheiro "Publish Profile" do teu App Service no Azure
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: .
