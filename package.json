@@ -1,0 +1,21 @@
+{
+  "name": "biblioteca-bot",
+  "version": "1.0.0",
+  "description": "Chatbot para Biblioteca Universitária com Azure CLU e CosmosDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "botbuilder": "^4.20.0",
+    "botbuilder-ai": "^4.20.0",
+    "restify": "^11.1.0",
+    "dotenv": "^16.3.1",
+    "@azure/cosmos": "^4.0.0",
+    "axios": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

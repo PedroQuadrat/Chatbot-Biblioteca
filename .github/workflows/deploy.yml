@@ -1,0 +1,65 @@
+name: Build and Deploy to Azure Bot
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'app-biblioteca-bot'   # Coloca aqui o nome do teu App Service
+  NODE_VERSION: '18.x'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Instalar dependências e Build
+        run: |
+          npm install
+          npm run build --if-present
+          npm test --if-present
+
+      - name: Criar artefacto de deploy (Zip)
+        run: zip -r release.zip . -x "node_modules/*" ".git/*" ".github/*" ".env"
+
+      - name: Upload do artefacto
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: release.zip
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download do artefacto
+        uses: actions/download-artifact@v3
+        with:
+          name: node-app
+
+      - name: Descompactar artefacto
+        run: unzip release.zip
+
+      - name: 'Deploy para Azure Web App'
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          # IMPORTANTE: Configura esta Secret no GitHub (Settings -> Secrets -> Actions)
+          # O valor deve ser o conteúdo do ficheiro "Publish Profile" do teu App Service no Azure
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
