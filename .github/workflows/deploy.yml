@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'app-biblioteca-bot'
+  AZURE_WEBAPP_NAME: 'chatbot-pq'
   NODE_VERSION: '22.x'
 
 jobs:
