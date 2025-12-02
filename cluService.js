@@ -25,7 +25,7 @@ class CluService {
                     id: "1",
                     text: query,
                     modality: "text",
-                    language: "pt", 
+                    language: "pt-br", 
                     participantId: "1"
                 }
             },
