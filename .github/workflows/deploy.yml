@@ -30,7 +30,7 @@ jobs:
           # npm test --if-present
 
       - name: Criar artefacto de deploy (Zip)
-        run: zip -r release.zip . -x "node_modules/*" ".git/*" ".github/*" ".env"
+        run: zip -r release.zip . -x ".git/*" ".github/*" ".env"
 
       - name: Upload do artefacto
         uses: actions/upload-artifact@v4
